@@ -6,6 +6,9 @@ package pc01_caloriescontrol.views;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static javax.swing.JOptionPane.showMessageDialog;
+import pc01_caloriescontrol.controllers.RegisterCaloriesController;
+import pc01_caloriescontrol.models.Alimento;
 import pc01_caloriescontrol.models.UsuarioCalorias;
 import pc01_caloriescontrol.models.UsuarioCaloriasModel;
 
@@ -14,6 +17,11 @@ import pc01_caloriescontrol.models.UsuarioCaloriasModel;
  * @author C2A601-03
  */
 public class registerMain extends javax.swing.JFrame {
+    
+    
+    private final RegisterCaloriesController registerCaloriesController = new RegisterCaloriesController();
+    private String userName = "";
+    
 
     /**
      * Creates new form registerMain
@@ -57,7 +65,19 @@ public class registerMain extends javax.swing.JFrame {
 
         jLabel4.setText("Racion Unidad:");
 
+        txtUnityRation.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtUnityRationKeyTyped(evt);
+            }
+        });
+
         jLabel5.setText("Calorias:");
+
+        txtCalories.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCaloriesKeyTyped(evt);
+            }
+        });
 
         btnRegister.setText("Registrar");
         btnRegister.addActionListener(new java.awt.event.ActionListener() {
@@ -67,6 +87,11 @@ public class registerMain extends javax.swing.JFrame {
         });
 
         btnSeeCalories.setText("Ver total de calorias");
+        btnSeeCalories.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeeCaloriesActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("grs.");
 
@@ -131,26 +156,64 @@ public class registerMain extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
         // TODO add your handling code here:
-        UsuarioCalorias uc = new UsuarioCalorias();
-        uc.setNombre(txtName.getText());
+        Alimento a = new Alimento();
+        userName = txtName.getText();
         if(cboxFoodType.getSelectedIndex() == 0){
-            uc.setCaloriasDesayuno(Integer.parseInt((txtCalories.getText())));
+            a.setTipoComida(0);
         } else if (cboxFoodType.getSelectedIndex() == 1){
-            uc.setCaloriasAlmuerzo(Integer.parseInt((txtCalories.getText())));
+            a.setTipoComida(1);
         } else {
-            uc.setCaloriasCena(Integer.parseInt((txtCalories.getText())));
+            a.setTipoComida(2);
         }
-        UsuarioCaloriasModel ucm = new UsuarioCaloriasModel();
+        a.setNombreAlimento(txtFoodName.getText());
+        a.setGramos(Integer.parseInt((txtUnityRation.getText())));
+        a.setCalorias(Integer.parseInt((txtCalories.getText())));
         try {
-            ucm.saveCalories(uc);
+            registerCaloriesController.addCalories(a, userName);
         } catch (Exception ex) {
             Logger.getLogger(registerMain.class.getName()).log(Level.SEVERE, null, ex);
         }
+        showMessageDialog(null, "Los datos han sido guardados con exito!");
+        
+        //LIMPIAMOS LOS TXT
+        txtName.setEditable(false);
+        cboxFoodType.setSelectedIndex(0);
+        txtFoodName.setText("");
+        txtUnityRation.setText("");
+        txtCalories.setText("");
     }//GEN-LAST:event_btnRegisterActionPerformed
+
+    private void txtUnityRationKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUnityRationKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        
+        if(!Character.isDigit(c)){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtUnityRationKeyTyped
+
+    private void txtCaloriesKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCaloriesKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        
+        if(!Character.isDigit(c)){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCaloriesKeyTyped
+
+    private void btnSeeCaloriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeeCaloriesActionPerformed
+        // TODO add your handling code here:
+        registerCaloriesController.registerCaloriesControl(userName);
+        
+        
+        totalsView tView = new totalsView(this, true);
+        tView.setVisible(true);
+    }//GEN-LAST:event_btnSeeCaloriesActionPerformed
 
     /**
      * @param args the command line arguments

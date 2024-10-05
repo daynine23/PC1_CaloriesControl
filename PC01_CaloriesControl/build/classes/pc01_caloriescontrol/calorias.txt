@@ -1,1 +1,1 @@
-Kevin,100,0,0,0,null,null
+Capullin,300,500,500,1300,Bajo Consumo,Sugerir aumentar la ingesta de proteínas y carbohidratos

@@ -19,7 +19,7 @@ public class UsuarioCalorias {
     private int totalCalorias;
     private String estadoConsumo;
     private String recomendacion;
-    private List alimentosRegistradosLst;
+    private List<Alimento> alimentosRegistradosLst;
     
     
     public String toStringCalories()

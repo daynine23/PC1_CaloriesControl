@@ -61,11 +61,12 @@ public class UsuarioCaloriasModel implements Model{
         }
     }
     
-    public void saveFoods(UsuarioCalorias uc) throws Exception
+    public void saveFoods(Alimento a, String userName) throws Exception
     {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(new File(DIRECTORY, FILECALORIES), true));
-            writer.write(uc.toStringCalories(), 0, uc.toStringCalories().length());
+            BufferedWriter writer = new BufferedWriter(new FileWriter(new File(DIRECTORY, FILEFOODS), true));
+            System.out.println("comidas : " + userName + "," + a.toString() + a.toString().length());
+            writer.write(userName + "," + a.toString(), 0, a.toString().length() + userName.length() + 1);
             writer.newLine();
             writer.close();
         } catch (FileNotFoundException fnfe) {

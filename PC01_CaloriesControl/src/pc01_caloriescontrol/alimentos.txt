@@ -1,0 +1,3 @@
+Capullin,pan,123,300
+Capullin,pollo,400,500
+Capullin,Jugo,500,500
