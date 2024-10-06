@@ -77,43 +77,50 @@ public class UsuarioCaloriasModel implements Model{
             notifyViews();
         }
     }
-
-    /**
-     * Reads a {@link SchedulerEvent} saved in disk with name {@link #FILE}.
-     * @return List of lists (matrix) of the events
-     * @throws Exception If it can't read event file
-     */
-    public Vector<Vector<Object>> getGuests() throws Exception
-    {
-        Vector<Vector<Object>> response = new Vector<>();
-
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(new File(DIRECTORY, FILECALORIES)));
-            String line = reader.readLine();
-
-            while (line != null) {
-                Vector<Object> eventInfo = new Vector<Object>();
-                String[] tokens = line.split(";");
-
-                eventInfo.add(tokens[0]);
-                eventInfo.add(tokens[1]);
-                //eventInfo.add(Genre.valueOf(tokens[2]));
-                eventInfo.add(tokens[3]);
-                eventInfo.add(tokens[4].equals("1") ? "ON" : "OFF");
-
-                response.add(eventInfo);
-                line = reader.readLine();
+    
+    public List<String> listCalories(){
+        List<String> fileList = new ArrayList<>();
+        /*if(Obtener_Codigo_Alumno.getText().isEmpty()){
+            showMessageDialog(null, "Porfavor ingrese el codigo de alumno!");
+            return;
+        }*/
+        
+        try{
+            //LEEMOS CALORIAS
+            FileReader fr = new FileReader("./src/pc01_caloriescontrol/calorias.txt");
+            BufferedReader br = new BufferedReader(fr);
+            
+            String d;
+            while((d=br.readLine())!= null){
+                    fileList.add(d);
             }
-
-            reader.close();
-        } catch (FileNotFoundException fnfe) {
-            notice = "File not found";
-            notifyViews();
-        } catch (Exception ex) {
-            notice = "There was a problem reading the event file";
-            notifyViews();
+            br.close();
+            
+                                    
+        }catch(Exception e){
+            e.printStackTrace();
         }
-
-        return response;
+        
+        return fileList;
     }
+    
+    public List<String> listFoods(){
+        
+        List<String> fileList = new ArrayList<>();
+        
+        try{
+        FileReader fr = new FileReader("./src/pc01_caloriescontrol/alimentos.txt");
+            BufferedReader br = new BufferedReader(fr);
+            
+            String d;
+            while((d=br.readLine())!= null){
+                    fileList.add(d);
+            }
+            br.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return fileList;
+    }
+
 }

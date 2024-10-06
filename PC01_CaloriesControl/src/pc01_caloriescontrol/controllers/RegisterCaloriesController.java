@@ -24,43 +24,47 @@ public class RegisterCaloriesController {
     private static final List<Alimento> listaAlimentos = new ArrayList<>();
     
     
-    public void registerCaloriesControl(String userName)
-    {
+    public void registerCaloriesControl(String userName){
         int dCalorias = 0;
         int aCalorias = 0;
         int cCalorias = 0;
         int totalCalorias = 0;
-        try {
-            UsuarioCalorias uc = new UsuarioCalorias();
-            for(Alimento a : listaAlimentos){
-                if(a.getTipoComida()==0){
-                    dCalorias =+ a.getCalorias();
-                } else if(a.getTipoComida()==1){
-                    aCalorias =+ a.getCalorias();
-                } else {
-                    cCalorias =+ a.getCalorias();
+        
+        System.out.println("La lista de alimentos esta vacia? : " + listaAlimentos.isEmpty());
+        
+        if(!listaAlimentos.isEmpty()){
+            try {
+                UsuarioCalorias uc = new UsuarioCalorias();
+                for(Alimento a : listaAlimentos){
+                    if(a.getTipoComida()==0){
+                        dCalorias =+ a.getCalorias();
+                    } else if(a.getTipoComida()==1){
+                        aCalorias =+ a.getCalorias();
+                    } else {
+                        cCalorias =+ a.getCalorias();
+                    }
                 }
+                uc.setNombre(userName);
+                uc.setCaloriasDesayuno(dCalorias);
+                uc.setCaloriasAlmuerzo(aCalorias);
+                uc.setCaloriasCena(cCalorias);
+                totalCalorias = dCalorias + aCalorias + cCalorias;
+                uc.setTotalCalorias(totalCalorias);
+                if(totalCalorias < 1500){
+                    uc.setEstadoConsumo(EstadosConsumo.BAJO_CONSUMO.toString());
+                    uc.setRecomendacion(Recomendaciones.REC_BAJO_CONSUMO.toString());
+                } else if (totalCalorias > 1500 && totalCalorias < 2000){
+                    uc.setEstadoConsumo(EstadosConsumo.CONSUMO_ADECUADO.toString());
+                    uc.setRecomendacion(Recomendaciones.REC_CONSUMO_ADECUADO.toString());
+                } else if (totalCalorias > 2000){
+                    uc.setEstadoConsumo(EstadosConsumo.EXCESO_CALORIAS.toString());
+                    uc.setRecomendacion(Recomendaciones.REC_EXCESO_CALORIAS.toString());
+                }
+                UsuarioCaloriasModel ucModel = new UsuarioCaloriasModel();
+                ucModel.saveCalories(uc); //MODEL
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "ERROR", e.getMessage(), JOptionPane.ERROR_MESSAGE);
             }
-            uc.setNombre(userName);
-            uc.setCaloriasDesayuno(dCalorias);
-            uc.setCaloriasAlmuerzo(aCalorias);
-            uc.setCaloriasCena(cCalorias);
-            totalCalorias = dCalorias + aCalorias + cCalorias;
-            uc.setTotalCalorias(totalCalorias);
-            if(totalCalorias < 1500){
-                uc.setEstadoConsumo(EstadosConsumo.BAJO_CONSUMO.toString());
-                uc.setRecomendacion(Recomendaciones.REC_BAJO_CONSUMO.toString());
-            } else if (totalCalorias > 1500 && totalCalorias < 2000){
-                uc.setEstadoConsumo(EstadosConsumo.CONSUMO_ADECUADO.toString());
-                uc.setRecomendacion(Recomendaciones.REC_CONSUMO_ADECUADO.toString());
-            } else if (totalCalorias > 2000){
-                uc.setEstadoConsumo(EstadosConsumo.EXCESO_CALORIAS.toString());
-                uc.setRecomendacion(Recomendaciones.REC_EXCESO_CALORIAS.toString());
-            }
-            UsuarioCaloriasModel ucModel = new UsuarioCaloriasModel();
-            ucModel.saveCalories(uc); //MODEL
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "ERROR", e.getMessage(), JOptionPane.ERROR_MESSAGE);
         }
 
         //AQUI DEBERIA LLAMAR AL METODO CARGAR TABLA DESDE TXT

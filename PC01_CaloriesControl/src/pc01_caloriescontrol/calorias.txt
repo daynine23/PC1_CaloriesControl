@@ -1,1 +1,2 @@
 Capullin,300,500,500,1300,Bajo Consumo,Sugerir aumentar la ingesta de proteínas y carbohidratos
+Daynine,400,300,150,850,Bajo Consumo,Sugerir aumentar la ingesta de proteínas y carbohidratos

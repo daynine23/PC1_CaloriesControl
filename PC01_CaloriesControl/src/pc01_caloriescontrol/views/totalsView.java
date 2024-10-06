@@ -10,19 +10,38 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import pc01_caloriescontrol.controllers.ListCaloriesController;
+import pc01_caloriescontrol.models.Alimento;
+import pc01_caloriescontrol.models.UsuarioCalorias;
 
 /**
  *
  * @author USUARIO
  */
 public class totalsView extends javax.swing.JDialog {
+    
+    private final ListCaloriesController listCaloriesController = new ListCaloriesController();
 
     /**
      * Creates new form totalsView
      */
-    public totalsView(java.awt.Frame parent, boolean modal) {
+    public totalsView(java.awt.Frame parent, boolean modal){
         super(parent, modal);
         initComponents();
+        tblFoods.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Alimento", "Racion Unidad (grs)", "Calorías"
+            }
+        ));
+        jScrollPane1.setViewportView(tblFoods);
+        cargarDatosCalorias();
+        cargarTablaAlimentos();
     }
 
     /**
@@ -51,6 +70,7 @@ public class totalsView extends javax.swing.JDialog {
         lblCalCen = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         lblCalTot = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -71,30 +91,37 @@ public class totalsView extends javax.swing.JDialog {
 
         jLabel8.setText("ALIMENTOS");
 
+        lblCalDes.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         lblCalDes.setText("jLabel9");
 
         jLabel1.setText("NOMBRE");
 
+        lblNombre.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         lblNombre.setText("jLabel10");
 
         jLabel2.setText("CALORIAS DESAYUNO");
 
+        lblCalAlm.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         lblCalAlm.setText("jLabel11");
 
         jLabel3.setText("CALORIAS ALMUERZO");
 
+        lblEstCon.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         lblEstCon.setText("jLabel12");
 
         jLabel4.setText("ESTADO CONSUMO");
 
+        lblRecomendacion.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         lblRecomendacion.setText("jLabel13");
 
         jLabel5.setText("RECOMENDACION");
 
+        lblCalCen.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         lblCalCen.setText("jLabel14");
 
         jLabel6.setText("CALORIAS CENA");
 
+        lblCalTot.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         lblCalTot.setText("jLabel15");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -105,7 +132,7 @@ public class totalsView extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(47, 47, 47)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
@@ -113,15 +140,14 @@ public class totalsView extends javax.swing.JDialog {
                                         .addGap(18, 18, 18)
                                         .addComponent(lblCalAlm))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel1)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(lblNombre))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel2))
-                                        .addGap(29, 29, 29)
-                                        .addComponent(lblCalDes)))
-                                .addGap(68, 68, 68)
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lblCalDes)
+                                            .addComponent(lblNombre))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel7)
@@ -135,16 +161,18 @@ public class totalsView extends javax.swing.JDialog {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel4)
                                     .addComponent(jLabel5))
-                                .addGap(18, 18, 18)
+                                .addGap(34, 34, 34)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblRecomendacion)
-                                    .addComponent(lblEstCon)))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 555, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(lblRecomendacion, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblEstCon, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(274, 274, 274)
-                        .addComponent(jLabel8)))
+                        .addComponent(jLabel8))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 555, Short.MAX_VALUE)
+                            .addComponent(jSeparator1))))
                 .addContainerGap(40, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -174,7 +202,9 @@ public class totalsView extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(lblRecomendacion))
-                .addGap(33, 33, 33)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -185,39 +215,39 @@ public class totalsView extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cargarDatos(){
+    public void cargarDatosCalorias(){
+        
+        UsuarioCalorias uc = new UsuarioCalorias();
+        uc = listCaloriesController.cargarCalorias();
+        
+        lblNombre.setText(uc.getNombre());
+        lblCalDes.setText(String.valueOf(uc.getCaloriasDesayuno()));
+        lblCalAlm.setText(String.valueOf(uc.getCaloriasAlmuerzo()));
+        lblCalCen.setText(String.valueOf(uc.getCaloriasCena()));
+        lblCalTot.setText(String.valueOf(uc.getTotalCalorias()));
+        lblEstCon.setText(uc.getEstadoConsumo());
+        lblRecomendacion.setText(uc.getRecomendacion());
+    }
+    
+    public void cargarTablaAlimentos(){
+
         
         DefaultTableModel modelResult = (DefaultTableModel) tblFoods.getModel();
         modelResult.setRowCount(0);
         tblFoods.setModel(modelResult);
         
-        
-        List<String> fileList = new ArrayList<>();
-        String codIsbn = "";
-        String titulo = "";
-        String nombreAutor = "";
-        /*if(Obtener_Codigo_Alumno.getText().isEmpty()){
-            showMessageDialog(null, "Porfavor ingrese el codigo de alumno!");
-            return;
-        }*/
-        
-        try{
-            //LEEMOS CALORIAS
-            FileReader fr = new FileReader("./src/pc01_caloriescontrol/calorias.txt");
-            BufferedReader br = new BufferedReader(fr);
-            
-            String d;
-            while((d=br.readLine())!= null){
-                    fileList.add(d);
-            }
-            br.close();
-            
-         
-            
-            
-        }catch(Exception e){
-            e.printStackTrace();
+        List<Alimento> foodList = new ArrayList<>();
+        foodList = listCaloriesController.cargarAlimentos();
+        for(int i = 0; i < foodList.size(); i++){
+            modelResult.setRowCount(foodList.size());
+            //Setea Nombre Alimento
+            modelResult.setValueAt(foodList.get(i).getNombreAlimento(), i, 0);
+            //Setea Gramos del Alimento
+            modelResult.setValueAt(foodList.get(i).getGramos(), i, 1);
+            //Setea Calorias del Alimento
+            modelResult.setValueAt(foodList.get(i).getCalorias(), i, 2);
         }
+        tblFoods.setModel(modelResult);
     }
     
     
@@ -273,6 +303,7 @@ public class totalsView extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblCalAlm;
     private javax.swing.JLabel lblCalCen;
     private javax.swing.JLabel lblCalDes;

@@ -1,3 +1,6 @@
 Capullin,pan,123,300
 Capullin,pollo,400,500
 Capullin,Jugo,500,500
+Daynine,cereal,200,400
+Daynine,pescado,400,300
+Daynine,fresa,150,150
